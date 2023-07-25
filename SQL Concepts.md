@@ -105,7 +105,7 @@ NOTE: You can either use the keyword INNER JOIN or JOIN to perform this operatio
 
 - Full Join or the Full Outer Join returns all those records which either have a match in the left(Table1) or the right(Table2) table.
 - Syntax:
-    SELECT Table1.Column1,Table1.Column2,Table2.Column1,....
+  - SELECT Table1.Column1,Table1.Column2,Table2.Column1,....
     FROM Table1
     FULL JOIN Table2
     ON Table1.MatchingColumnName = Table2.MatchingColumnName;
@@ -193,17 +193,58 @@ Note: The WHERE clause is not only used in SELECT statements, it is also used in
 - A transaction is the logical work unit that performs a single activity or multiple activities in a database.
 - Transactions may consist of a single read, write, delete, or update operations or a combination of these.
 
+### Transaction Control ###
+
+The following commands are used to control transactions.
+
+- COMMIT − to save the changes.
+
+- ROLLBACK − to roll back the changes.
+
+- SAVEPOINT − creates points within the groups of transactions in which to ROLLBACK.
+
+- SET TRANSACTION − Places a name on a transaction.
+
+Transactional control commands are only used with the DML Commands such as - INSERT, UPDATE and DELETE only. They cannot be used while creating tables or dropping them because these operations are automatically committed in the database.
+
 ## LOCKING MECHANISM ##
 
 - The lock is a mechanism associated with a table for restricting unauthorized access to the data. It is mainly used to solve the concurrency problem in transactions.
 - We can apply a lock on row level, database level, table level, and page level.
+- For example, if an exclusive (X) lock is held on a row within a table by a transaction, no other transaction can modify that row until the lock is released.
+- Minimizing locks increases concurrency, which can improve performance.
+- Multiple instances of the Locks object can be monitored at the same time, with each instance representing a lock on a resource type.
+- The basic syntax used for LOCKING a table in SQL is as follows:
+  - LOCK [ TABLE ] [ ONLY ]
+    table_name
+    [ IN lock_mode MODE ] [ NOWAIT ];
 
 ## Database Isolation Levels ##
 
 - Database isolation defines the degree to which a transaction must be isolated from the data modifications made by any other transaction(even though in reality there can be a large number of concurrently running transactions).
 - The overarching goal is to prevent reads and writes of temporary, aborted, or otherwise incorrect data written by concurrent transactions.
 
+### The four standard isolation levels ###
+
+![four isolation levels](<https://media.geeksforgeeks.org/wp-content/cdn-uploads/transactnLevel.png>)
+
+- Read Uncommitted: This is the lowest level of isolation where a transaction can see uncommitted changes made by other transactions. This can result in dirty reads, non-repeatable reads, and phantom reads.
+
+- Read Committed: In this isolation level, a transaction can only see changes made by other committed transactions. This eliminates dirty reads but can still result in non-repeatable reads and phantom reads.
+
+- Repeatable Read: This isolation level guarantees that a transaction will see the same data throughout its duration, even if other transactions commit changes to the data. However, phantom reads are still possible.
+
+- Serializable: This is the highest isolation level where a transaction is executed as if it were the only transaction in the system. All transactions must be executed sequentially, which ensures that there are no dirty reads, non-repeatable reads, or phantom reads.
+
 ## TRIGGERS ##
 
 - A trigger is a special type of stored procedure that automatically runs when an event occurs in the database server.
-- DML triggers run when a user tries to modify data through a data manipulation language (DML) event. DML events are INSERT, UPDATE, or DELETE statements on a table or view.
+
+### Types of SQL Triggers ###
+
+In SQL Server, we have 3 groups of triggers:
+
+- DML (data manipulation language) triggers – We’ve already mentioned them, and they react to DML commands. These are – INSERT, UPDATE, and DELETE.
+- DDL (data definition language) triggers – As expected, triggers of this type shall react to DDL commands like – CREATE, ALTER, and DROP.
+- Logon triggers – This type reacts to LOGON events.
+
